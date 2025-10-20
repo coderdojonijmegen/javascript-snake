@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Snake</title>
+    <style>
+        canvas {
+            border: 1px solid #333333;
+            display: block;
+            margin: 0 auto;
+            background-color: #555555;
+        }
+        .snakearea {
+            margin: 0 auto;
+            text-align: center;
+        }
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div class="snakearea">
+    <h1>Snake <span id="gameState"></span></h1>
+    <div class="score">Score: <span id="score">0</span></div>
+    <canvas id="playground" width="800" height="800"></canvas>
+</div>
+<script>
+    const elemPlayground = document.getElementById("playground");
+    const elemScore = document.getElementById("score");
+    const ctx = elemPlayground.getContext("2d");
+    let score = 0;
+    const boxSize = 25;
+    const foodSize = boxSize / 2 + 1;
+    const numBoxes = elemPlayground.width / boxSize;
+
+    const slang = [{ x: 0, y: 0 }];
+    const appel = { x: 0, y: 0 };
+    let richting = "rechts";
+    let intervalId = 0;
+
+    function tekenSlang() {
+        slang.forEach(part => {
+            ctx.fillStyle = "green";
+            ctx.fillRect(part.x * boxSize, part.y * boxSize, boxSize - 1, boxSize - 1);
+        });
+    }
+
+    function tekenAppel() {
+        ctx.fillStyle = "red";
+        ctx.beginPath();
+        ctx.arc(appel.x * boxSize + foodSize, appel.y * boxSize + foodSize, foodSize, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+
+    function nieuwePlaatsAppel() {
+        appel.x = Math.floor(Math.random() * numBoxes);
+        appel.y = Math.floor(Math.random() * numBoxes);
+    }
+
+    function verplaatsSlang() {
+        const head = {...slang[0]};
+        switch (richting) {
+            case "omhoog": head.y -= 1; break;
+            case "omlaag": head.y += 1; break;
+            case "links": head.x -= 1; break;
+            case "rechts": head.x += 1; break;
+        }
+        slang.unshift(head);
+        if (slang[0].x === appel.x && slang[0].y === appel.y) {
+            score += 1;
+            nieuwePlaatsAppel();
+        } else {
+            slang.pop();
+        }
+    }
+
+    function werkScoreBij() {
+        elemScore.textContent = score;
+    }
+
+    function heeftDeRandGeraakt() {
+        const head = slang[0];
+        return head.x < 0 || head.x >= numBoxes || head.y < 0 || head.y >= numBoxes;
+    }
+
+    function heeftZichzelfGeraakt() {
+        const head = slang[0];
+        return slang.slice(1).some(part => part.x === head.x && part.y === head.y);
+    }
+
+    function isGameOver() {
+        return heeftDeRandGeraakt() || heeftZichzelfGeraakt();
+    }
+
+    function gameLoop() {
+        if (isGameOver()) {
+            document.getElementById("gameState").textContent = " - Game Over!";
+            clearInterval(intervalId);
+            return;
+        }
+        ctx.clearRect(0, 0, elemPlayground.width, elemPlayground.height);
+        verplaatsSlang();
+        tekenAppel();
+        tekenSlang();
+        werkScoreBij();
+    }
+
+    document.addEventListener("keydown", (event) => {
+        switch (event.key) {
+            case "ArrowUp": richting = richting !== "omlaag" ? "omhoog" : richting; break
+            case "ArrowDown": richting = richting !== "omhoog" ? "omlaag" : richting; break
+            case "ArrowLeft": richting = richting !== "rechts" ? "links" : richting; break
+            case "ArrowRight": richting = richting !== "links" ? "rechts" : richting; break
+            case "o": document.location.reload(); break
+        }
+        console.log(richting);
+    });
+
+    nieuwePlaatsAppel();
+    intervalId = setInterval(gameLoop, 100);
+
+
+</script>
+</body>
+</html>
