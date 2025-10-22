@@ -1,6 +1,6 @@
-# Instructie template
+# Javascript Snake
 
-Zie [index.md](index.md) voor instructies hoe deze template te gebruiken.
+De [instructie](index.md).
 
 ## Licentie
 Deze instructies worden, net als alle andere instructies van CoderDojo Nijmegen, aangeboden onder een [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Licentie](http://creativecommons.org/licenses/by-nc-sa/4.0/).

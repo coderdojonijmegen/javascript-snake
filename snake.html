@@ -32,9 +32,9 @@
     const elemScore = document.getElementById("score");
     const ctx = elemPlayground.getContext("2d");
     let score = 0;
-    const boxSize = 25;
-    const foodSize = boxSize / 2 + 1;
-    const numBoxes = elemPlayground.width / boxSize;
+    const vakGrootte = 25;
+    const appelGrootte = vakGrootte / 2 + 1;
+    const aantalVakjes = elemPlayground.width / vakGrootte;
 
     const slang = [{ x: 0, y: 0 }];
     const appel = { x: 0, y: 0 };
@@ -44,20 +44,20 @@
     function tekenSlang() {
         slang.forEach(part => {
             ctx.fillStyle = "green";
-            ctx.fillRect(part.x * boxSize, part.y * boxSize, boxSize - 1, boxSize - 1);
+            ctx.fillRect(part.x * vakGrootte, part.y * vakGrootte, vakGrootte - 1, vakGrootte - 1);
         });
     }
 
     function tekenAppel() {
         ctx.fillStyle = "red";
         ctx.beginPath();
-        ctx.arc(appel.x * boxSize + foodSize, appel.y * boxSize + foodSize, foodSize, 0, 2 * Math.PI);
+        ctx.arc(appel.x * vakGrootte + appelGrootte, appel.y * vakGrootte + appelGrootte, appelGrootte, 0, 2 * Math.PI);
         ctx.fill();
     }
 
     function nieuwePlaatsAppel() {
-        appel.x = Math.floor(Math.random() * numBoxes);
-        appel.y = Math.floor(Math.random() * numBoxes);
+        appel.x = Math.floor(Math.random() * aantalVakjes);
+        appel.y = Math.floor(Math.random() * aantalVakjes);
     }
 
     function verplaatsSlang() {
@@ -82,13 +82,13 @@
     }
 
     function heeftDeRandGeraakt() {
-        const head = slang[0];
-        return head.x < 0 || head.x >= numBoxes || head.y < 0 || head.y >= numBoxes;
+        const slangenKop = slang[0];
+        return slangenKop.x < 0 || slangenKop.x >= aantalVakjes || slangenKop.y < 0 || slangenKop.y >= aantalVakjes;
     }
 
     function heeftZichzelfGeraakt() {
-        const head = slang[0];
-        return slang.slice(1).some(part => part.x === head.x && part.y === head.y);
+        const slangenKop = slang[0];
+        return slang.slice(1).some(part => part.x === slangenKop.x && part.y === slangenKop.y);
     }
 
     function isGameOver() {

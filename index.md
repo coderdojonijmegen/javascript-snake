@@ -13,11 +13,38 @@ We gaan Snake bouwen voor in de browser.
 
 ## Introductie
 
+![Snake op een Nokia](nokia-snake.png)
+
+Snake is een mobiele video game [geïntroduceerd op een Nokia telefoon in 1998](https://en.wikipedia.org/wiki/Snake_(1998_video_game)).
+
+### Spelregels
+Het doel van het spel Snake is om zoveel mogelijk fruit te eten (dit is je score).
+Hoe meer je eet, hoe langer de slang wordt en ook beweegt de slang sneller.
+Als de slang tegen zichzelf botst of buiten het scherm gaat is het game over.
+
+Dus om Snake te bouwen moet het spel het volgende doen:
+
+- Beweeg de slang met de pijltjestoetsen
+- Plaats op een willekeurige plek fruit
+- De slang moet het fruit kunnen eten
+  - Als er fruit gegeten is moet de slang sneller bewegen
+  - Als er fruit gegeten is moet de slang langer worden
+  - Als er fruit gegeten is krijg je een punt
+- Als de slang tegen zichzelf botst, is het game over
+- Ook als de slang buiten het scherm gaat is het game over
+
+Nu we de spelregels duidelijk hebben en weten wat het spel moet gaan doen, is het tijd om Snake te gaan bouwen!
+
 ## Wat heb je nodig?
+
+Een text editor als [Visual Studio Code](https://code.visualstudio.com/) en natuurlijk een browser zoals Chrome.
 
 ## Instructie
 
 ### 1. HTML
+
+We beginnen met de basis. Maak een nieuw bestand aan met bijvoorbeeld de naam `snake.html`. Kopieer en plak daarin
+onderstaande code. Als je het bestand opent in Chrome, zie je een groot vierkant.
 
 ```html
 <!DOCTYPE html>
@@ -29,6 +56,7 @@ We gaan Snake bouwen voor in de browser.
         canvas {
             display: block;
             margin: 0 auto;
+            border: 1px solid black;
         }
     </style>
 </head>
@@ -42,6 +70,8 @@ We gaan Snake bouwen voor in de browser.
 
 ### 2. Een appel
 
+We gaan nu aan de slag met Javascript en beginnen met het tekenen van een appel:
+
 Voeg toe op regel 17 in de vorige code:
 ```html
 <script>
@@ -53,36 +83,51 @@ En tussen de `<script>` en `</script>` tags:
     const elemPlayground = document.getElementById("playground");
     const ctx = elemPlayground.getContext("2d");
 
-    const boxSize = 25;
-    const foodSize = boxSize / 2 + 1;
-    const numBoxes = elemPlayground.width / boxSize;
+    const vakGrootte = 25;
+    const appelGrootte = vakGrootte / 2 + 1;
+    const aantalVakjes = elemPlayground.width / vakGrootte;
 
-    const food = { x: 0, y: 0 };
+    const appel = { x: 0, y: 0 };
 
-    function drawFood() {
+    function tekenAppel() {
         ctx.fillStyle = "red";
         ctx.beginPath();
-        ctx.arc(food.x * boxSize + foodSize, food.y * boxSize + foodSize, foodSize, 0, 2 * Math.PI);
+        ctx.arc(appel.x * vakGrootte + appelGrootte, appel.y * vakGrootte + appelGrootte, appelGrootte, 0, 2 * Math.PI);
         ctx.fill();
     }
 
-    drawFood();
+    tekenAppel();
 ```
-## Uitdagingen
+Je ziet nu linksboven in het vierkant een rode cirkel: de appel.
 
-> Te doen:
-> 1. Pas [FrontMatter](https://gohugo.io/content-management/front-matter/) aan boven in dit bestand.
->    - `title` naar een passende titel bij deze instructie
->    - `data` naar vandaag
->    - `onderwerp` naar de gebruikte techniek aanpassen, bijvoorbeeld Python (wordt gebruikt om te sorteren per onderwerp)
-> 2. Denk qua structuur aan:
->   - Introductie van het onderwerp
->   - Wat heb je nodig (programma's/materialen)
->   - De instructie zelf verdeelt over stappen; het is fijn als kinderen per stap al resultaat kunnen zien
->   - Afronding met bijvoorbeeld uitdagingen op basis van het geleerde en/of linkjes naar pagina's met nog meer informatie over het onderwerp
-> 3. Laat onderstaande licentie staan
-> 
-> Bekijk [deze uitleg](https://github.com/coderdojonijmegen/hugo-coderdojo-nijmegen/blob/main/README.md) over hoe je kunt zien
-> hoe je instructies er uit zien in de site.  
+We hebben best veel code nodig gehad, maar regels 1 t/m 8 zijn nodig ter voorbereiding van tekenen en de indeling van het vierkant
+in kleine vakjes van 25 bij 25 pixels.
 
+`function tekenAppel()` tekent tenslotte de rode cirkel.
+
+### 3. De kop van de slang
+
+Voeg toe na regel `const appel = { x: 0, y: 0 };`:
+
+```javascript
+    const slang = [{ x: 10, y: 10 }];
+```
+
+En dan voor regel `tekenAppel();`:
+
+```javascript
+
+    function tekenSlang() {
+        slang.forEach(slangDeel => {
+            ctx.fillStyle = "green";
+            ctx.fillRect(slangDeel.x * vakGrootte, slangDeel.y * vakGrootte, vakGrootte - 1, vakGrootte - 1);
+        });
+    }
+
+```
+En na regel `tekenAppel();`:
+
+```javascript
+    tekenSlang();
+```
 {{< licentie rel="http://creativecommons.org/licenses/by-nc-sa/4.0/">}}
