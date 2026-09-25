@@ -36,7 +36,7 @@ Nu we de spelregels duidelijk hebben en weten wat het spel moet gaan doen, is he
 
 ## Wat heb je nodig?
 
-Een text editor als [Visual Studio Code](https://code.visualstudio.com/) en natuurlijk een browser zoals Chrome.
+{{< include file="/installatie/visual-studio-code" >}}
 
 ## Instructie
 
